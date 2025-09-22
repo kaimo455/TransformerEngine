@@ -118,6 +118,7 @@ void multi_tensor_quantize_impl(const std::vector<TensorWrapper> &input_list,
     std::vector<NVTETensor> nvte_tensor_input_list;
     std::vector<NVTETensor> nvte_tensor_output_list;
     for (size_t i = 0; i < num_tensors; ++i) {
+      if (input_list[i].numel() == 0) continue;
       nvte_tensor_input_list.push_back(input_list[i].data());
       nvte_tensor_output_list.push_back(output_list[i].data());
     }
@@ -128,6 +129,7 @@ void multi_tensor_quantize_impl(const std::vector<TensorWrapper> &input_list,
   } else {
     // Quantize kernels individually
     for (size_t i = 0; i < num_tensors; ++i) {
+      if (input_list[i].numel() == 0) continue;
       quantizer_cpp_list[i]->quantize(input_list[i], output_list[i]);
     }
   }
